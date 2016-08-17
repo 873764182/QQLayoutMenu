@@ -10,11 +10,11 @@
         android:theme="@style/AppTheme">
         <!--第一种方式 在Activity中实现-->
         <activity android:name=".widget_2.MainActivity">
-            <intent-filter>
+            <!--<intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            </intent-filter>-->
         </activity>
         <!--第二种方式 抽离成控件-->
         <activity android:name=".widget.TestActivity">

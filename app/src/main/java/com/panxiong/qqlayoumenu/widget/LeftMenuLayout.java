@@ -1,6 +1,7 @@
 package com.panxiong.qqlayoumenu.widget;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -17,7 +18,7 @@ import android.widget.LinearLayout;
  * <p/>
  * 仿照QQ6.0版本的侧滑菜单控件 这个控件可以直接拿出来到其他项目中 因为没有其他资源文件与引用
  */
-public class LeftMenuLayout extends LinearLayout {
+public class LeftMenuLayout extends FrameLayout {
     private Context context = null;
 
     /*滚动支持*/
@@ -32,6 +33,8 @@ public class LeftMenuLayout extends LinearLayout {
     private int leftSize = 0;
     /*菜单是否是打开状态*/
     private boolean isOpen = false;
+    /*蒙板视图*/
+    private View maskView = null;
     /*菜单打开/关闭监听*/
     private MenuChangedListener menuChangedListener = null;
 
@@ -59,6 +62,7 @@ public class LeftMenuLayout extends LinearLayout {
         if (menuChangedListener != null) {
             menuChangedListener.onChanged(isOpen);
         }
+        maskView.setVisibility(GONE);
     }
 
     /*打开菜单*/
@@ -68,6 +72,7 @@ public class LeftMenuLayout extends LinearLayout {
         if (menuChangedListener != null) {
             menuChangedListener.onChanged(isOpen);
         }
+        maskView.setVisibility(VISIBLE);
     }
 
     /*菜单是否打开*/
@@ -82,7 +87,6 @@ public class LeftMenuLayout extends LinearLayout {
 
     /*初始化*/
     private void init() {
-        setOrientation(VERTICAL);
         /*创建根布局 横向滚动布局*/
         customHorizontal = new CustomHorizontal(context);
         FrameLayout.LayoutParams qqHorizontalLayoutParams = (FrameLayout.LayoutParams) customHorizontal.getLayoutParams();
@@ -105,12 +109,12 @@ public class LeftMenuLayout extends LinearLayout {
         rootLinearLayoutLayoutParams.width = LayoutParams.WRAP_CONTENT;
         rootLinearLayoutLayoutParams.height = LayoutParams.WRAP_CONTENT;
         rootLinearLayout.setLayoutParams(rootLinearLayoutLayoutParams);
-        rootLinearLayout.setOrientation(HORIZONTAL);
+        rootLinearLayout.setOrientation(LinearLayout.HORIZONTAL);
         /*获取子布局*/
         leftView = getChildAt(0);
         rightView = getChildAt(1);
         if (leftView == null || rightView == null) {
-            throw new RuntimeException("左布局为空或者右布局为空，请至少给LayoutByQQ添加两个子布局。");
+            throw new NullPointerException("左布局为空或者右布局为空，请至少给布局添加两个子布局。");
         }
         removeAllViews();   // 清空容器
         ViewGroup.LayoutParams layoutParamsLeft = leftView.getLayoutParams();   // 子布局管理器
@@ -129,7 +133,29 @@ public class LeftMenuLayout extends LinearLayout {
         /*添加子布局*/
         rootLinearLayout.removeAllViews();
         rootLinearLayout.addView(leftView, 0);
-        rootLinearLayout.addView(rightView, 1);
+        // rootLinearLayout.addView(rightView, 1);
+
+        FrameLayout maskFrameLayout = new FrameLayout(context);
+        maskFrameLayout.removeAllViews();
+        maskFrameLayout.addView(rightView, 0);
+        maskView = new View(context);
+        ViewGroup.LayoutParams maskViewLayoutParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        maskViewLayoutParams.width = getScreenSize(1);
+        maskViewLayoutParams.height = getScreenSize(2);
+        maskView.setLayoutParams(maskViewLayoutParams);
+        maskView.setBackgroundColor(Color.argb(100, 0, 0, 0));
+        maskFrameLayout.addView(maskView, 1);
+        maskView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isOpen()) {
+                    closeMenu();
+                }
+            }
+        });
+        rootLinearLayout.addView(maskFrameLayout, 1);
+
         /*保存到根布局*/
         customHorizontal.addView(rootLinearLayout);
         /*触摸捕捉*/
