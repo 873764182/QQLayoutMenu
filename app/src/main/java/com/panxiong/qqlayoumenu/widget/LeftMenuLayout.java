@@ -117,7 +117,7 @@ public class LeftMenuLayout extends LinearLayout {
         ViewGroup.LayoutParams layoutParamsRight = rightView.getLayoutParams(); // 子布局管理器
         int weight = getScreenSize(1);  // 屏幕宽度
         int height = getScreenSize(2);  // 屏幕高度
-        leftSize = Integer.valueOf(weight * 3 / 4); // 计算左布局的宽度
+        leftSize = weight * 3 / 4; // 计算左布局的宽度
         layoutParamsLeft.width = leftSize;
         layoutParamsLeft.height = height;
         leftView.setLayoutParams(layoutParamsLeft);     // 设置左布局宽高
