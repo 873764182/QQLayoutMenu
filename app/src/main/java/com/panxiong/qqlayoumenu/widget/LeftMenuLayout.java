@@ -9,13 +9,14 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
 /**
  * Created by panxi on 2016/3/30.
- * <p/>
+ * <p>
  * 仿照QQ6.0版本的侧滑菜单控件 这个控件可以直接拿出来到其他项目中 因为没有其他资源文件与引用
  */
 public class LeftMenuLayout extends FrameLayout {
@@ -62,6 +63,7 @@ public class LeftMenuLayout extends FrameLayout {
         if (menuChangedListener != null) {
             menuChangedListener.onChanged(isOpen);
         }
+        maskView.clearAnimation();
         maskView.setVisibility(GONE);
     }
 
@@ -72,6 +74,7 @@ public class LeftMenuLayout extends FrameLayout {
         if (menuChangedListener != null) {
             menuChangedListener.onChanged(isOpen);
         }
+        maskView.setAnimation(getShowAnimation(500));
         maskView.setVisibility(VISIBLE);
     }
 
@@ -207,6 +210,14 @@ public class LeftMenuLayout extends FrameLayout {
         } else {
             return outMetrics.heightPixels;
         }
+    }
+
+    /* View渐现动画效果 */
+    private AlphaAnimation getShowAnimation(int duration) {
+        AlphaAnimation mShowAnimation = new AlphaAnimation(0.0f, 1.0f);
+        mShowAnimation.setDuration(duration);
+        mShowAnimation.setFillAfter(true);
+        return mShowAnimation;
     }
 
     /*菜单改变监听*/
