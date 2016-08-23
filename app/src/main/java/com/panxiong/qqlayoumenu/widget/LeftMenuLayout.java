@@ -16,7 +16,7 @@ import android.widget.LinearLayout;
 
 /**
  * Created by panxi on 2016/3/30.
- * <p>
+ * <p/>
  * 仿照QQ6.0版本的侧滑菜单控件 这个控件可以直接拿出来到其他项目中 因为没有其他资源文件与引用
  */
 public class LeftMenuLayout extends FrameLayout {
@@ -38,6 +38,9 @@ public class LeftMenuLayout extends FrameLayout {
     private View maskView = null;
     /*菜单打开/关闭监听*/
     private MenuChangedListener menuChangedListener = null;
+    /*触摸位置坐标*/
+    private float downX, downY;
+    private boolean flag = false;
 
     public LeftMenuLayout(Context context) {
         super(context);
@@ -161,21 +164,7 @@ public class LeftMenuLayout extends FrameLayout {
 
         /*保存到根布局*/
         customHorizontal.addView(rootLinearLayout);
-        /*触摸捕捉*/
-        customHorizontal.setOnTouchListener(new OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if (event.getAction() == MotionEvent.ACTION_UP) {
-                    if (scrollSize_X > leftSize / 2) {
-                        closeMenu();
-                    } else {
-                        openMenu();
-                    }
-                    return true;
-                }
-                return false;
-            }
-        });
+        // 关闭侧滑菜单
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -197,6 +186,21 @@ public class LeftMenuLayout extends FrameLayout {
         protected void onScrollChanged(int l, int t, int oldl, int oldt) {
             super.onScrollChanged(l, t, oldl, oldt);
             scrollSize_X = l;
+        }
+
+        @Override
+        public boolean onTouchEvent(MotionEvent event) {
+            switch (event.getAction()) {
+                case MotionEvent.ACTION_UP:
+                    if (scrollSize_X > leftSize / 2) {
+                        closeMenu();
+                    } else {
+                        openMenu();
+                    }
+                    return true;
+                default:
+            }
+            return super.onTouchEvent(event);   // 如果不希望抽屉可以滑动打开（如出现滑动冲突时）只要这里返回true就可以
         }
     }
 
