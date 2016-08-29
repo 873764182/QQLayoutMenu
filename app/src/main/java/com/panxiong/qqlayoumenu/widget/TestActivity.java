@@ -1,8 +1,6 @@
 package com.panxiong.qqlayoumenu.widget;
 
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -16,7 +14,6 @@ public class TestActivity extends AppCompatActivity {
     private LeftMenuLayout mLeftMenuLayout;
     private Button mBtTestClickLeft;
     private Button mBtTestClickRight;
-    private SwipeRefreshLayout mSwipeRefreshLayout;
     private ListView mListView;
 
     @Override
@@ -27,7 +24,6 @@ public class TestActivity extends AppCompatActivity {
         mLeftMenuLayout = (LeftMenuLayout) findViewById(R.id.leftMenuLayout);
         mBtTestClickLeft = (Button) findViewById(R.id.btTestClickLeft);
         mBtTestClickRight = (Button) findViewById(R.id.btTestClickRight);
-        mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
         mListView = (ListView) findViewById(R.id.listView);
 
         mBtTestClickLeft.setOnClickListener(new View.OnClickListener() {
@@ -50,17 +46,6 @@ public class TestActivity extends AppCompatActivity {
             }
         });
 
-        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
-            @Override
-            public void onRefresh() {
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mSwipeRefreshLayout.setRefreshing(false);
-                    }
-                }, 1000);
-            }
-        });
         String[] arr = new String[20];
         for (int i = 0; i < 20; i++) {
             arr[i] = "item " + i;

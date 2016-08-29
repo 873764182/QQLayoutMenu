@@ -42,9 +42,6 @@ public class LeftMenuLayout extends FrameLayout {
     private int weight = 0;
     // 屏幕高度
     private int height = 0;
-    /*触摸位置坐标*/
-    private float downX, downY;
-    private boolean flag = false;
 
     public LeftMenuLayout(Context context) {
         super(context);
@@ -181,6 +178,8 @@ public class LeftMenuLayout extends FrameLayout {
 
     /*滑动支持*/
     private class CustomHorizontal extends HorizontalScrollView {
+        /*触摸位置坐标*/
+        private float downX, downY;
 
         public CustomHorizontal(Context context) {
             super(context);
