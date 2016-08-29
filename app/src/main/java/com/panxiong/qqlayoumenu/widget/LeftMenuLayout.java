@@ -38,6 +38,10 @@ public class LeftMenuLayout extends FrameLayout {
     private View maskView = null;
     /*菜单打开/关闭监听*/
     private MenuChangedListener menuChangedListener = null;
+    // 屏幕宽度
+    private int weight = 0;
+    // 屏幕高度
+    private int height = 0;
     /*触摸位置坐标*/
     private float downX, downY;
     private boolean flag = false;
@@ -125,8 +129,8 @@ public class LeftMenuLayout extends FrameLayout {
         removeAllViews();   // 清空容器
         ViewGroup.LayoutParams layoutParamsLeft = leftView.getLayoutParams();   // 子布局管理器
         ViewGroup.LayoutParams layoutParamsRight = rightView.getLayoutParams(); // 子布局管理器
-        int weight = getScreenSize(1);  // 屏幕宽度
-        int height = getScreenSize(2);  // 屏幕高度
+        weight = getScreenSize(1);  // 屏幕宽度
+        height = getScreenSize(2);  // 屏幕高度
         leftSize = weight * 3 / 4; // 计算左布局的宽度
         layoutParamsLeft.width = leftSize;
         layoutParamsLeft.height = height;
@@ -191,6 +195,10 @@ public class LeftMenuLayout extends FrameLayout {
         @Override
         public boolean onTouchEvent(MotionEvent event) {
             switch (event.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    downX = event.getX();
+                    downY = event.getY();
+                    break;
                 case MotionEvent.ACTION_UP:
                     if (scrollSize_X > leftSize / 2) {
                         closeMenu();
@@ -200,7 +208,11 @@ public class LeftMenuLayout extends FrameLayout {
                     return true;
                 default:
             }
-            return super.onTouchEvent(event);   // 如果不希望抽屉可以滑动打开（如出现滑动冲突时）只要这里返回true就可以
+            if ((downX > weight / 10) && (downX < weight * 9 / 10)) {
+                return true;    // 如果不希望抽屉可以滑动打开（如出现滑动冲突时）只要这里返回true就可以
+            } else {
+                return super.onTouchEvent(event);
+            }
         }
     }
 

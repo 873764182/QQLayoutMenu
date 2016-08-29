@@ -15,8 +15,9 @@
         <!--在这里添加你的菜单-->
         <Button
             android:id="@+id/btTestClickLeft"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:padding="10dp"
             android:text="关闭抽屉" />
     </LinearLayout>
@@ -30,9 +31,21 @@
         <!--在这里显示你的主页内容-->
         <Button
             android:id="@+id/btTestClickRight"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
             android:padding="10dp"
             android:text="打开抽屉" />
+
+        <android.support.v4.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ListView
+                android:id="@+id/listView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+        </android.support.v4.widget.SwipeRefreshLayout>
     </LinearLayout>
 </com.panxiong.qqlayoumenu.widget.LeftMenuLayout>
