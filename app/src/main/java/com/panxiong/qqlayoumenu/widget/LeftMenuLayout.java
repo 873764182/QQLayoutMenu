@@ -192,11 +192,27 @@ public class LeftMenuLayout extends FrameLayout {
         }
 
         @Override
+        public boolean onInterceptTouchEvent(MotionEvent ev) {
+            if (ev.getRawX() > 50) {
+                return false;
+            }
+            return super.onInterceptTouchEvent(ev);
+        }
+
+        @Override
         public boolean onTouchEvent(MotionEvent event) {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     downX = event.getX();
                     downY = event.getY();
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (downX <= 0) {
+                        downX = event.getX();
+                    }
+                    if (downY <= 0) {
+                        downY = event.getY();
+                    }
                     break;
                 case MotionEvent.ACTION_UP:
                     if (scrollSize_X > leftSize / 2) {
@@ -204,6 +220,8 @@ public class LeftMenuLayout extends FrameLayout {
                     } else {
                         openMenu();
                     }
+                    downX = 0;
+                    downY = 0;
                     return true;
                 default:
             }
